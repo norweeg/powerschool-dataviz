@@ -1,0 +1,103 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'PowerSchool_DataViz.ui'
+#
+# Created by: PyQt5 UI code generator 5.9.2
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_PowerSchool_DataViz_Window(object):
+    def setupUi(self, PowerSchool_DataViz_Window):
+        PowerSchool_DataViz_Window.setObjectName("PowerSchool_DataViz_Window")
+        PowerSchool_DataViz_Window.resize(1108, 841)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/if_icon-61_667366.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        PowerSchool_DataViz_Window.setWindowIcon(icon)
+        self.centralwidget = QtWidgets.QWidget(PowerSchool_DataViz_Window)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
+        self.centralwidget.setSizePolicy(sizePolicy)
+        self.centralwidget.setObjectName("centralwidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setObjectName("gridLayout")
+        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
+        self.tabWidget.setSizePolicy(sizePolicy)
+        self.tabWidget.setDocumentMode(True)
+        self.tabWidget.setObjectName("tabWidget")
+        self.Graph_Tab = QtWidgets.QWidget()
+        self.Graph_Tab.setObjectName("Graph_Tab")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.Graph_Tab)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.Graph_Grid = QtWidgets.QGridLayout()
+        self.Graph_Grid.setObjectName("Graph_Grid")
+        self.Graph_View = QtWebEngineWidgets.QWebEngineView(self.Graph_Tab)
+        self.Graph_View.setUrl(QtCore.QUrl("about:blank"))
+        self.Graph_View.setObjectName("Graph_View")
+        self.Graph_Grid.addWidget(self.Graph_View, 0, 0, 1, 1)
+        self.gridLayout_5.addLayout(self.Graph_Grid, 0, 0, 1, 1)
+        self.tabWidget.addTab(self.Graph_Tab, "")
+        self.Data_Table_Tab = QtWidgets.QWidget()
+        self.Data_Table_Tab.setObjectName("Data_Table_Tab")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.Data_Table_Tab)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.Data_Table_Grid = QtWidgets.QGridLayout()
+        self.Data_Table_Grid.setObjectName("Data_Table_Grid")
+        self.Data_Table = QtWidgets.QTableWidget(self.Data_Table_Tab)
+        self.Data_Table.setFrameShape(QtWidgets.QFrame.Panel)
+        self.Data_Table.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.Data_Table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.Data_Table.setAlternatingRowColors(True)
+        self.Data_Table.setRowCount(0)
+        self.Data_Table.setColumnCount(0)
+        self.Data_Table.setObjectName("Data_Table")
+        self.Data_Table.horizontalHeader().setVisible(False)
+        self.Data_Table.verticalHeader().setVisible(False)
+        self.Data_Table.verticalHeader().setHighlightSections(True)
+        self.Data_Table_Grid.addWidget(self.Data_Table, 0, 0, 1, 1)
+        self.gridLayout_3.addLayout(self.Data_Table_Grid, 0, 0, 1, 1)
+        self.tabWidget.addTab(self.Data_Table_Tab, "")
+        self.gridLayout.addWidget(self.tabWidget, 0, 1, 1, 1)
+        PowerSchool_DataViz_Window.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(PowerSchool_DataViz_Window)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1108, 21))
+        self.menubar.setDefaultUp(False)
+        self.menubar.setNativeMenuBar(True)
+        self.menubar.setObjectName("menubar")
+        self.File_Menu = QtWidgets.QMenu(self.menubar)
+        self.File_Menu.setObjectName("File_Menu")
+        PowerSchool_DataViz_Window.setMenuBar(self.menubar)
+        self.actionOpen = QtWidgets.QAction(PowerSchool_DataViz_Window)
+        self.actionOpen.setObjectName("actionOpen")
+        self.actionQuit = QtWidgets.QAction(PowerSchool_DataViz_Window)
+        self.actionQuit.setObjectName("actionQuit")
+        self.File_Menu.addAction(self.actionOpen)
+        self.File_Menu.addSeparator()
+        self.File_Menu.addAction(self.actionQuit)
+        self.menubar.addAction(self.File_Menu.menuAction())
+
+        self.retranslateUi(PowerSchool_DataViz_Window)
+        self.tabWidget.setCurrentIndex(0)
+        self.actionQuit.triggered.connect(PowerSchool_DataViz_Window.close)
+        QtCore.QMetaObject.connectSlotsByName(PowerSchool_DataViz_Window)
+
+    def retranslateUi(self, PowerSchool_DataViz_Window):
+        _translate = QtCore.QCoreApplication.translate
+        PowerSchool_DataViz_Window.setWindowTitle(_translate("PowerSchool_DataViz_Window", "PowerSchool DataViz"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Graph_Tab), _translate("PowerSchool_DataViz_Window", "Graph"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Data_Table_Tab), _translate("PowerSchool_DataViz_Window", "Data"))
+        self.File_Menu.setTitle(_translate("PowerSchool_DataViz_Window", "File"))
+        self.actionOpen.setText(_translate("PowerSchool_DataViz_Window", "Open"))
+        self.actionOpen.setShortcut(_translate("PowerSchool_DataViz_Window", "Ctrl+O"))
+        self.actionQuit.setText(_translate("PowerSchool_DataViz_Window", "Quit"))
+        self.actionQuit.setShortcut(_translate("PowerSchool_DataViz_Window", "Ctrl+Q"))
+
+from PyQt5 import QtWebEngineWidgets
+from PowerSchool_DataViz_Resources import resources_rc

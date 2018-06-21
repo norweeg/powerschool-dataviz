@@ -15,8 +15,8 @@
    <string>PowerSchool DataViz</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/icons/icons/if_icon-61_667366.ico</normaloff>:/icons/icons/if_icon-61_667366.ico</iconset>
+   <iconset resource="PowerSchool_DataViz_Resources.qrc">
+    <normaloff>:/icons/icons/Round_Landmark_Icon_School.svg</normaloff>:/icons/icons/Round_Landmark_Icon_School.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -125,13 +125,27 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew_Window"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionSave_Graph_As"/>
+    <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_PowerSchool_DataViz"/>
+   </widget>
    <addaction name="File_Menu"/>
+   <addaction name="menuHelp"/>
   </widget>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="PowerSchool_DataViz_Resources.qrc">
+     <normaloff>:/icons/icons/baseline-folder_open-24px.svg</normaloff>:/icons/icons/baseline-folder_open-24px.svg</iconset>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
@@ -140,11 +154,56 @@
    </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="PowerSchool_DataViz_Resources.qrc">
+     <normaloff>:/icons/icons/baseline-exit_to_app-24px.svg</normaloff>:/icons/icons/baseline-exit_to_app-24px.svg</iconset>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionAbout_PowerSchool_DataViz">
+   <property name="text">
+    <string>About PowerSchool DataViz</string>
+   </property>
+  </action>
+  <action name="actionNew_Window">
+   <property name="icon">
+    <iconset resource="PowerSchool_DataViz_Resources.qrc">
+     <normaloff>:/icons/icons/baseline-open_in_new-24px.svg</normaloff>:/icons/icons/baseline-open_in_new-24px.svg</iconset>
+   </property>
+   <property name="text">
+    <string>New Window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionSave_Graph_As">
+   <property name="icon">
+    <iconset resource="PowerSchool_DataViz_Resources.qrc">
+     <normaloff>:/icons/icons/baseline-save_alt-24px.svg</normaloff>:/icons/icons/baseline-save_alt-24px.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Save Graph As...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="icon">
+    <iconset resource="PowerSchool_DataViz_Resources.qrc">
+     <normaloff>:/icons/icons/baseline-print-24px.svg</normaloff>:/icons/icons/baseline-print-24px.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Print</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>
@@ -156,24 +215,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="PowerSchool_DataViz_Resources.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>actionQuit</sender>
-   <signal>triggered()</signal>
-   <receiver>PowerSchool_DataViz_Window</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>553</x>
-     <y>420</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

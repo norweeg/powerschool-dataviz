@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/baseline-save_alt-24px.svg</file>
+    <file>icons/baseline-print-24px.svg</file>
+    <file>icons/baseline-open_in_new-24px.svg</file>
+    <file>icons/Round_Landmark_Icon_School.svg</file>
+    <file>icons/baseline-exit_to_app-24px.svg</file>
+    <file>icons/baseline-folder_open-24px.svg</file>
+  </qresource>
+</RCC>

@@ -13,23 +13,24 @@ class PowerSchool_DataViz_Window(QtWidgets.QMainWindow):
         #initialize the super class
         super().__init__()
         Ui_PowerSchool_DataViz_Window().setupUi(self)
-        self.setVisible(True)
         self.show()
 
 
     def __open_file(self):
         dialog_box=QtWidgets.QFileDialog(self,directory=Path.home(),filter="CSV Files (*.csv)")
         try:
-            self.data=pandas.read_csv(dialog_box.getOpenFileName())
+            self.__input_data=pandas.read_csv(dialog_box.getOpenFileName())
         except:
             return
-#        __create_plot()
-#        __populate_table()
+        self.__create_plot()
+        self.__populate_table()
 
-#    def __populate_table(self):
+    def __populate_table(self):
+        pass
 
     def __create_plot(self):
-        self.html=file_html(plot, CDN)
+        self.__plot
+        self.html=file_html(self.__plot, CDN)
 
 
 

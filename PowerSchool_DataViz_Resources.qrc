@@ -7,4 +7,7 @@
     <file>icons/baseline-exit_to_app-24px.svg</file>
     <file>icons/baseline-folder_open-24px.svg</file>
   </qresource>
+  <qresource prefix="text">
+    <file>LICENSE</file>
+  </qresource>
 </RCC>

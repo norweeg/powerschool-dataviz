@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>Brennen Raimer</author>
- <class>PowerSchool_DataViz_Window</class>
- <widget class="QMainWindow" name="PowerSchool_DataViz_Window">
+ <class>PowerSchool_DataViz</class>
+ <widget class="QMainWindow" name="PowerSchool_DataViz">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>1108</width>
-    <height>841</height>
+    <height>856</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -137,6 +137,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionAbout_PowerSchool_DataViz"/>
+    <addaction name="actionAbout_Qt"/>
    </widget>
    <addaction name="File_Menu"/>
    <addaction name="menuHelp"/>
@@ -204,6 +205,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt">
+   <property name="text">
+    <string>About Qt</string>
    </property>
   </action>
  </widget>

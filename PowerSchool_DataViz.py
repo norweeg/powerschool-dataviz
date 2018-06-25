@@ -13,17 +13,10 @@ class AboutWindow(QtWidgets.QMessageBox):
     def __init__(self,parent=None,description="",license=""):
         super().__init__(parent)
         self.setStandardButtons(self.Ok)
-        license_button=QtWidgets.QPushButton(text="License")
-        self.addButton(license_button,self.HelpRole)
-        license_button.pressed.connect(self.__show_license)
         self.setText(description)
-        self.license=license
+        self.setDetailedText(license)
+        self.setTextInteractionFlags(self.TextSelectableByMouse)
         self.show()
-
-    def __show_license(self):
-        license_window=QtWidgets.QTextEdit(self.license,self)
-        license_window.setReadOnly(True)
-        return license_window
         
 
 

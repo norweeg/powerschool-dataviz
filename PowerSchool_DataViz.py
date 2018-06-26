@@ -10,14 +10,33 @@ from PowerSchool_DataViz_UI import Ui_PowerSchool_DataViz
 import PowerSchool_DataViz_Resources
 
 class AboutWindow(QtWidgets.QMessageBox):
-    def __init__(self,parent=None,description="",license=""):
-        super().__init__(parent)
+    def __init__(self,parent=None,description="",license="",title=""):
+        super().__init__(parent=parent,text=description)
         self.setStandardButtons(self.Ok)
-        self.setText(description)
+        #self.setWindowTitle(title)
+        #self.setIcon=parent.windowIcon()
+        #self.setText(description)
         self.setDetailedText(license)
-        self.setTextInteractionFlags(self.TextSelectableByMouse)
+        #find and override default text/behavior of automatically created "details" button
+        for button in self.buttons():
+            if self.buttonRole(button)==self.ActionRole:
+                #self.removeButton(button)
+                #self.removeButton(self.details_button)
+                self.new_button=QtWidgets.QPushButton(parent=self,text="Show License")
+                self.new_button.clicked.connect(self.__toggle_license)
+                self.addButton(self.new_button,self.ActionRole)
         self.show()
-        
+
+    def __toggle_license(self):
+        license_textbox=self.children()[3]
+        if license_textbox.isVisible():
+            license_textbox.hide()
+            self.new_button.setText("Show License")
+        else:
+            license_textbox.show()
+            self.new_button.setText("Hide License")
+
+
 
 
 
@@ -64,7 +83,7 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
         if file.open(QtCore.QFile.ReadOnly):
             license = str(file.readAll(), 'utf-8')
             file.close()
-        return AboutWindow(parent=self,description=description,license=license)
+        return AboutWindow(parent=self,description=description,license=license,title=name)
 
     def __populate_table(self):
         pass

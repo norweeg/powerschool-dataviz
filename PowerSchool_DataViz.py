@@ -69,15 +69,23 @@ class About_Window(QtWidgets.QMessageBox):
         self.addButton(self.Ok)
         for button in self.buttons():
             if button.text()=="Show Details...":
-                new_button=QtWidgets.QPushButton(parent=self,text="Show License")
-                new_button.clicked.connect(self.__toggle_license)
-                self.addButton(new_button,self.ActionRole)
-                self.removeButton(button)
+                button.setText("Show License")
+                button.clicked.connect(self.__toggle_text)
         self.update()
         self.show()
 
-    def __toggle_license(self):
-        self.children()[3].setVisible(not self.children()[3].isVisible())
+    def __toggle_text(self):
+        self.update()
+        for button in self.buttons():
+            if button.text()=="OK":
+                continue
+            elif "Show License" in button.text():
+                self.showbutton=button
+                button.setText("Hide License")
+            else:
+                self.hidebutton=button
+                button.setText("Show License")
+        self.update
 
 
 if __name__=='__main__':

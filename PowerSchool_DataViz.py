@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngine, QtWebEngineWidgets, QtP
 from bokeh.plotting import figure
 from bokeh.resources import CDN
 from bokeh.embed import file_html
-import pandas
+import pandas as pd
 import os
 import sys
 from pathlib import Path
@@ -32,11 +32,33 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
 
     def __open_file(self):
         try:
-            self.__input_data=pandas.read_csv(QtWidgets.QFileDialog().getOpenFileName(parent=self,directory=str(Path.home()),filter="CSV Files (*.csv)"))
-        except:
-            return
+            input_file=QtWidgets.QFileDialog().getOpenFileName(parent=self,directory=str(Path.home()),filter="CSV Files (*.csv)")
+            self.__input_data=pd.read_csv(Path(input_file[0]),engine="python",squeeze=True,)
+        except pd.errors.ParserError as e:
+            return QtWidgets.QMessageBox(icon=QtWidgets.QMessageBox.Critical,parent=self,text=str(e)).show()
+        except pd.errors.EmptyDataError as e:
+            return QtWidgets.QMessageBox(icon=QtWidgets.QMessageBox.Critical,parent=self,text=str(e)).show()
+        except pd.errors.DtypeWarning as e:
+            return QtWidgets.QMessageBox(icon=QtWidgets.QMessageBox.Warning,parent=self,text=str(e)).show()
+
         #self.__create_plot()
-        #self.__populate_table()
+        self.__populate_table()
+
+    def __populate_table(self):
+        self.gui.Data_Table.clear()
+        row_count,column_count=self.__input_data.shape
+        self.gui.Data_Table.setColumnCount(column_count)
+        self.gui.Data_Table.setRowCount(row_count)
+        self.gui.Data_Table.setHorizontalHeaderLabels(self.__input_data.columns)
+        for row in self.__input_data.itertuples():
+            for column in range(column_count): 
+                #first item in row is its index
+                self.gui.Data_Table.setItem(row[0],column,QtWidgets.QTableWidgetItem(self.__input_data.iat[row[0],column]))
+        self.gui.Data_Table.resizeColumnsToContents()
+        self.gui.Data_Table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.update()
+        return
+
     
     def __save_graph(self):
         filename=QtWidgets.QFileDialog().getSaveFileName(parent=self,directory=str(Path.home()))

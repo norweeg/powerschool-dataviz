@@ -11,29 +11,36 @@ import PowerSchool_DataViz_Resources
 
 class PowerSchool_DataViz(QtWidgets.QMainWindow):
     def __init__(self,parent=None):
+        #make the QApplication running and handling the events in this window accessible to this object
         global app
         self.app=app
         #initialize the super class
         super().__init__(parent)
+        #use compiled .ui file to build GUI
         self.gui=Ui_PowerSchool_DataViz()
         self.gui.setupUi(self)
+        #connect menu items to the functions they should execute
         self.gui.actionNew_Window.triggered.connect(self.__new_window)
-        self.gui.actionQuit.triggered.connect(self.app.closeAllWindows)
+        self.gui.actionQuit.triggered.connect(self.app.closeAllWindows) #this is why we need global app
         self.gui.actionOpen.triggered.connect(self.__open_file)
         self.gui.actionSave_Graph_As.triggered.connect(self.__save_graph)
         self.gui.actionPrint.triggered.connect(self.__print)
         self.gui.actionAbout_PowerSchool_DataViz.triggered.connect(self.__about)
-        self.gui.actionAbout_Qt.triggered.connect(self.app.aboutQt)
+        self.gui.actionAbout_Qt.triggered.connect(self.app.aboutQt) #this about window is built into Qt
+        #display the window
         self.show()
 
-
+    #creates a new instance of this object
     def __new_window(self):
         return PowerSchool_DataViz(parent=self)
 
+    #use built-in file dialog to pick CSV file and read it into pandas dataframe
+    #use of file dialog with csv filter is presumed sufficient to avoid exceptions related to file permissions
+    #and selecting files which are absolutely not csv files
     def __open_file(self):
         try:
             input_file=QtWidgets.QFileDialog().getOpenFileName(parent=self,directory=str(Path.home()),filter="CSV Files (*.csv)")
-            self.__input_data=pd.read_csv(Path(input_file[0]),engine="python",squeeze=True,)
+            self.__input_data=pd.read_csv(Path(input_file[0]),engine="python",squeeze=True,parse_dates=["IncidentDate","DateReported"],infer_datetime_format=True,header=0,dtype={"StudentNumber":"str"})
         except pd.errors.ParserError as e:
             return QtWidgets.QMessageBox(icon=QtWidgets.QMessageBox.Critical,parent=self,text=str(e)).show()
         except pd.errors.EmptyDataError as e:
@@ -44,22 +51,32 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
         #self.__create_plot()
         self.__populate_table()
 
+    #fill the table on the data tab for reference
     def __populate_table(self):
+        #remove everything from the table.  If we opened a new file, it is new data.
         self.gui.Data_Table.clear()
+        #get the size of table and set adjust the row and column count to match
         row_count,column_count=self.__input_data.shape
         self.gui.Data_Table.setColumnCount(column_count)
         self.gui.Data_Table.setRowCount(row_count)
+        #fill in column headers
         self.gui.Data_Table.setHorizontalHeaderLabels(self.__input_data.columns)
+        #iterate over the cells of data and enter them into the table
         for row in self.__input_data.itertuples():
             for column in range(column_count): 
                 #first item in row is its index
-                self.gui.Data_Table.setItem(row[0],column,QtWidgets.QTableWidgetItem(self.__input_data.iat[row[0],column]))
+                self.gui.Data_Table.setItem(row[0],column,QtWidgets.QTableWidgetItem(self.__input_data.astype(str).iat[row[0],column]))
+        #as of the writing of this code, there is a bug in QtDesigner which always saves the visibility  of the horizontal and
+        #vertical headers as "false", so I will manually set them here because I don't want to have to manually update the
+        #designer .ui file before compiling it to python
+        self.gui.Data_Table.horizontalHeader().setVisible(True)
+        self.gui.Data_Table.verticalHeader().setVisible(True)
+        #make the table easy to read and make it static.  No editing data.
         self.gui.Data_Table.resizeColumnsToContents()
-        self.gui.Data_Table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.gui.Data_Table.resizeRowsToContents()
+        self.gui.Data_Table.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
         self.update()
-        return
 
-    
     def __save_graph(self):
         filename=QtWidgets.QFileDialog().getSaveFileName(parent=self,directory=str(Path.home()))
         print(filename)
@@ -70,13 +87,12 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
     def __about(self):
         return About_Window(self)
 
-    def __populate_table(self):
-        pass
-
     def __create_plot(self):
         self.__plot
         self.html=file_html(self.__plot, CDN)
 
+#Trying to use as much built-in functionality as possible.  This was the best I could come up with for an "About" window
+#that also displays the license unless I wanted to make my own
 class About_Window(QtWidgets.QMessageBox):
     def __init__(self,parent):
         global app

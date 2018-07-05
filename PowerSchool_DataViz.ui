@@ -84,14 +84,8 @@
             <property name="sortingEnabled">
              <bool>true</bool>
             </property>
-            <property name="rowCount">
-             <number>0</number>
-            </property>
-            <property name="columnCount">
-             <number>0</number>
-            </property>
             <attribute name="horizontalHeaderVisible">
-             <bool>false</bool>
+             <bool>true</bool>
             </attribute>
             <attribute name="horizontalHeaderCascadingSectionResizes">
              <bool>true</bool>
@@ -99,19 +93,13 @@
             <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
              <bool>true</bool>
             </attribute>
-            <attribute name="horizontalHeaderStretchLastSection">
-             <bool>true</bool>
-            </attribute>
             <attribute name="verticalHeaderVisible">
-             <bool>false</bool>
+             <bool>true</bool>
             </attribute>
             <attribute name="verticalHeaderCascadingSectionResizes">
              <bool>true</bool>
             </attribute>
             <attribute name="verticalHeaderHighlightSections">
-             <bool>true</bool>
-            </attribute>
-            <attribute name="verticalHeaderStretchLastSection">
              <bool>true</bool>
             </attribute>
            </widget>

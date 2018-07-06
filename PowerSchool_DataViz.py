@@ -2,6 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngine, QtWebEngineWidgets, QtP
 from bokeh.plotting import figure
 from bokeh.resources import CDN
 from bokeh.embed import file_html
+import bokeh.palettes as palettes
+import bokeh.layouts as layouts
+import bokeh.models as models
 import pandas as pd
 import os
 import sys
@@ -27,6 +30,10 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
         self.gui.actionPrint.triggered.connect(self.__print)
         self.gui.actionAbout_PowerSchool_DataViz.triggered.connect(self.__about)
         self.gui.actionAbout_Qt.triggered.connect(self.app.aboutQt) #this about window is built into Qt
+        #create a blank plot
+        self.__plot=figure(tools=["save"])
+        self.html=file_html(self.__plot, CDN)
+        self.gui.Graph_View.page().setHtml(self.html)
         #display the window
         self.show()
 
@@ -48,7 +55,7 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
         except pd.errors.DtypeWarning as e:
             return QtWidgets.QMessageBox(icon=QtWidgets.QMessageBox.Warning,parent=self,text=str(e)).show()
 
-        #self.__create_plot()
+        self.__create_plot()
         self.__populate_table()
 
     #fill the table on the data tab for reference
@@ -88,8 +95,7 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
         return About_Window(self)
 
     def __create_plot(self):
-        self.__plot
-        self.html=file_html(self.__plot, CDN)
+        self.gui.Graph_View.reload()
 
 #Trying to use as much built-in functionality as possible.  This was the best I could come up with for an "About" window
 #that also displays the license unless I wanted to make my own
@@ -109,21 +115,25 @@ class About_Window(QtWidgets.QMessageBox):
             if button.text()=="Show Details...":
                 button.setText("Show License")
                 button.clicked.connect(self.__toggle_text)
+        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding,QtWidgets.QSizePolicy.MinimumExpanding))
         self.update()
         self.show()
 
+    def showEvent(self,event):
+        pass
+
     def __toggle_text(self):
-        self.update()
         for button in self.buttons():
+            button.update()
             if button.text()=="OK":
                 continue
-            elif "Show License" in button.text():
-                self.showbutton=button
+            elif "Hide" in button.text():
                 button.setText("Hide License")
-            else:
-                self.hidebutton=button
+            elif "Show" in button.text():
                 button.setText("Show License")
-        self.update
+            else:
+                continue
+
 
 
 if __name__=='__main__':

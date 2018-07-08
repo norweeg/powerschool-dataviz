@@ -49,6 +49,9 @@
          <layout class="QGridLayout" name="Graph_Grid">
           <item row="0" column="0">
            <widget class="QWebEngineView" name="Graph_View">
+            <property name="contextMenuPolicy">
+             <enum>Qt::PreventContextMenu</enum>
+            </property>
             <property name="url">
              <url>
               <string>about:blank</string>
@@ -69,6 +72,9 @@
          <layout class="QGridLayout" name="Data_Table_Grid">
           <item row="0" column="0">
            <widget class="QTableWidget" name="Data_Table">
+            <property name="contextMenuPolicy">
+             <enum>Qt::PreventContextMenu</enum>
+            </property>
             <property name="frameShape">
              <enum>QFrame::Panel</enum>
             </property>

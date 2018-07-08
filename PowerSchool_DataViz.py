@@ -1,15 +1,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngine, QtWebEngineWidgets, QtPrintSupport
-from bokeh.plotting import figure
-from bokeh.resources import CDN
+import bokeh.plotting as plotting
+from bokeh.resources import INLINE
 from bokeh.embed import file_html
 import bokeh.palettes as palettes
 import bokeh.layouts as layouts
 import bokeh.models as models
+import bokeh.events as events
+import bokeh.core.query as query
 import pandas as pd
 import os
 import sys
 from pathlib import Path
+#compiled with pyuic5 -o PowerSchool_DataViz_UI.py --resource-suffix="" PowerSchool_DataViz.ui
 from PowerSchool_DataViz_UI import Ui_PowerSchool_DataViz
+#comiled with pyrcc5 -o PowerSchool_DataViz_Resources.py PowerSchool_DataViz_Resources.qrc
 import PowerSchool_DataViz_Resources
 
 class PowerSchool_DataViz(QtWidgets.QMainWindow):
@@ -22,7 +26,16 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
         #use compiled .ui file to build GUI
         self.gui=Ui_PowerSchool_DataViz()
         self.gui.setupUi(self)
+        #create a blank plot
+        self.__initialize_plot()
+        #create a blank table
+        self.__initialize_table()
         #connect menu items to the functions they should execute
+        self.__connect_signals()
+        #display the window
+        self.show()
+
+    def __connect_signals(self):
         self.gui.actionNew_Window.triggered.connect(self.__new_window)
         self.gui.actionQuit.triggered.connect(self.app.closeAllWindows) #this is why we need global app
         self.gui.actionOpen.triggered.connect(self.__open_file)
@@ -30,12 +43,22 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
         self.gui.actionPrint.triggered.connect(self.__print)
         self.gui.actionAbout_PowerSchool_DataViz.triggered.connect(self.__about)
         self.gui.actionAbout_Qt.triggered.connect(self.app.aboutQt) #this about window is built into Qt
-        #create a blank plot
-        self.__plot=figure(tools=["save"])
-        self.html=file_html(self.__plot, CDN)
+        self.gui.Graph_View.page().profile().downloadRequested.connect(self.__save_graph)
+
+    def __initialize_plot(self):
+        #creates a blank plot to look at and connect actions to instead of looking at blank rectangle before data is loaded
+        self.__active_tools=["save","wheel_zoom","box_zoom","reset","tap","undo","redo","zoom_in","zoom_out","box_select","lasso_select",
+                            "hover","pan","poly_select"]
+        self.__plot=plotting.figure(tools=self.__active_tools,sizing_mode='stretch_both',logo=None,)
+        self.html=file_html(self.__plot, INLINE)
         self.gui.Graph_View.page().setHtml(self.html)
-        #display the window
-        self.show()
+
+    def __initialize_table(self):
+        #just put some blank rows and columns on the table so that its apparent that it's a table and not a blank square
+        self.gui.Data_Table.setColumnCount(20)
+        self.gui.Data_Table.setRowCount(50)
+        self.gui.Data_Table.horizontalHeader().setVisible(True)
+        self.gui.Data_Table.verticalHeader().setVisible(True)
 
     #creates a new instance of this object
     def __new_window(self):
@@ -81,12 +104,20 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
         #make the table easy to read and make it static.  No editing data.
         self.gui.Data_Table.resizeColumnsToContents()
         self.gui.Data_Table.resizeRowsToContents()
-        self.gui.Data_Table.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
+        #self.gui.Data_Table.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
         self.update()
 
-    def __save_graph(self):
-        filename=QtWidgets.QFileDialog().getSaveFileName(parent=self,directory=str(Path.home()))
-        print(filename)
+    def __save_graph(self,graph_png):
+        #use save file dialog to pick filename
+        filename=QtWidgets.QFileDialog().getSaveFileName(parent=self,directory=str(Path.home()),filter="PNG (*.png)")[0]
+        #if triggered by QMenuAction
+        if type(graph_png) is bool:
+            self.__plot.references()
+        else: #was triggered by clicking the save tool
+            #receive download request, set its path, accept it and delete download request when finished
+            graph_png.setPath(filename)
+            graph_png.finished.connect(graph_png.deleteLater)
+            graph_png.accept()
 
     def __print(self):
         QtPrintSupport.QPrintDialog(parent=self).open()
@@ -95,6 +126,7 @@ class PowerSchool_DataViz(QtWidgets.QMainWindow):
         return About_Window(self)
 
     def __create_plot(self):
+        self.__plot_data_source=models.ColumnarDataSource(self.__input_data)
         self.gui.Graph_View.reload()
 
 #Trying to use as much built-in functionality as possible.  This was the best I could come up with for an "About" window
